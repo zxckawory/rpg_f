@@ -1,7 +1,9 @@
-﻿class Character
+﻿using System.Drawing;
+
+class Character
 {
     public int Number;
-    protected int Health;
+    public int Health;
     protected int MaxHealth;
     protected int Damage;
     public int Lager;
@@ -21,14 +23,15 @@
         //Postavit();
     }
 
-    protected void Postavit()
+    protected virtual void Postavit()
     {
-        GameField.Pole[X, Y] = Number.ToString();
+        GameField.Pole[X, Y] = Number.ToString(); 
     }
 
     protected void Ubrat()
     {
         GameField.Pole[X, Y] = ".";
+        GameField.Color[X, Y] = ConsoleColor.DarkGreen;
     }
 
     public void Info()
@@ -58,8 +61,15 @@
         int damage = Damage / enemies.Count;
         foreach (Character character in enemies)
         {
-            Console.WriteLine($"Персонаж {Number} атаковал {character.Number}");
+            Console.WriteLine($"Персонаж {Number} {(Lager == 1 ? "Красный" : "Синий")} атаковал {character.Number} {(character.Lager == 1 ? "Красный" : "Синий")} с уроном {damage}");
             character.Health -= damage;
+
+            if (character.Health <= 0)
+            {
+                character.Health = 0;
+                Console.WriteLine($"Персонаж {character.Number} {(character.Lager == 1 ? "Красный" : "Синий")} умер");
+                Ubrat();
+            }
         }
     }
 

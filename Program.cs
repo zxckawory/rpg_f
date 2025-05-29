@@ -4,18 +4,19 @@
     public static List<CharacterBlue> BlueLager = [];
     static void Main()
     {
-        for (int i = 0; i < GameField.Width - 1; i++)
+        for (int i = 0; i < GameField.Width; i++)
         {
-            for (int j = 0; j < GameField.Height - 1; j++)
+            for (int j = 0; j < GameField.Height; j++)
             {
                 GameField.Pole[i, j] = ".";
+                GameField.Color[i, j] = ConsoleColor.DarkGreen;
             }
         }
 
         RedLager.Add(new CharacterRed(0, 100, 10, 0, 1));
         RedLager.Add(new CharacterRed(1, 100, 10, 0, 2));
-        BlueLager.Add(new CharacterBlue(3, 100, 10, 1, 1));
-        BlueLager.Add(new CharacterBlue(4, 100, 10, 1, 2));
+        BlueLager.Add(new CharacterBlue(0, 100, 10, 1, 1));
+        BlueLager.Add(new CharacterBlue(1, 100, 10, 1, 2));
 
         while (true)
         {
@@ -49,7 +50,19 @@
                                 guzlic.Info();
                             }
                             Console.WriteLine();
-                            personaj = RedLager[CorrectInt("Выберите персонажа: ", 0, RedLager.Count - 1)];
+                            while (true)
+                            {
+                                int index = CorrectInt("Выберите персонажа: ", 0, RedLager.Count - 1);
+                                if (RedLager[index].Health > 0)
+                                {
+                                    personaj = RedLager[index];
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Этот персонаж мёртв. Выберите другого.");
+                                }
+                            }
                         }
                         else
                         {
@@ -58,8 +71,21 @@
                                 guzlyach.Info();
                             }
                             Console.WriteLine();
-                            personaj = BlueLager[CorrectInt("Выберите персонажа: ", 0, BlueLager.Count - 1)];
+                            while (true)
+                            {
+                                int index = CorrectInt("Выберите персонажа: ", 0, BlueLager.Count - 1);
+                                if (BlueLager[index].Health > 0)
+                                {
+                                    personaj = BlueLager[index];
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Этот персонаж мёртв. Выберите другого.");
+                                }
+                            }
                         }
+
                         while (true)
                         {
                             Console.WriteLine();
@@ -99,6 +125,7 @@
                                         int y = CorrectInt("Введите координату врага по вертикали: ", 0, 9);
 
                                         Character enemy = null;
+                                        bool guzlicInList = false;
 
                                         if (personaj.Lager == 1)
                                         {
@@ -108,6 +135,13 @@
                                                 if (x == guzlic.X && y == guzlic.Y)
                                                 {
                                                     enemy = guzlic;
+                                                    foreach (Character guz in list)
+                                                    {
+                                                        if (guz == enemy)
+                                                        {
+                                                            guzlicInList = true;
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -119,10 +153,22 @@
                                                 if (x == guzlic.X && y == guzlic.Y)
                                                 {
                                                     enemy = guzlic;
+                                                    foreach (Character guz in list)
+                                                    {
+                                                        if (guz == enemy)
+                                                        {
+                                                            guzlicInList = true;
+                                                        }
+                                                    }
                                                 }
                                             }
-                                        }
 
+                                        }
+                                        if (!guzlicInList)
+                                        {
+                                            Console.WriteLine("Координаты не верны");
+                                            break;
+                                        }
                                         if (enemy == null)
                                         {
                                             Console.WriteLine("Враг не найден");
@@ -248,7 +294,7 @@
             lager = new(BlueLager);
         else
             lager = new(RedLager);
-        
+
         foreach (Character personaj in lager)
         {
 

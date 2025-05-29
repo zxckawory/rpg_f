@@ -1,8 +1,4 @@
-﻿using static System.Net.Mime.MediaTypeNames;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Reflection.Emit;
-
-class CharacterBlue : Character
+﻿class CharacterBlue : Character
 {
     public CharacterBlue(int number, int health, int damage, int x, int y) : base(number, health, damage, 2, x, y)
     {
@@ -12,7 +8,12 @@ class CharacterBlue : Character
         Lager = 2;
         X = x;
         Y = y;
-
         Postavit();
+    }
+
+    protected override void Postavit()
+    {
+        GameField.Color[X, Y] = ConsoleColor.Blue;
+        GameField.Pole[X, Y] = Number.ToString();
     }
 }

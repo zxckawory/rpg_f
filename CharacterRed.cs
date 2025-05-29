@@ -12,4 +12,10 @@ class CharacterRed : Character
         Y = y;
         Postavit();
     }
+
+    protected override void Postavit()
+    {
+        GameField.Color[X, Y] = ConsoleColor.Red;
+        GameField.Pole[X, Y] = Number.ToString();
+    }
 }
